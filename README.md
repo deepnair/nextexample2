@@ -12,7 +12,7 @@ This is based on the tutorial [Learn Next.js With TypeScript in 30 Minutes](http
 ---
 ## Steps
 
-### File creation and index.tsx
+### <u>File creation and index.tsx</u>
 
 1. Create the file with: 
     ```
