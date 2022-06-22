@@ -1,7 +1,7 @@
 ## About
 ---
 
-This is a basic Next.js application that shows characters from the Rick and Morty Api, along with links that takes them to their own page. The pages are dynamically created using Next.js's pagination system.
+This is a basic Next.js application that shows characters from the Rick and Morty Api, along with links that takes them to their own page. The pages are dynamically  created using Next.js's pagination system.
 
 The characters on the top under "Statically generated characters" are static pages that are created at build time.
 
@@ -12,7 +12,7 @@ This is based on the tutorial [Learn Next.js With TypeScript in 30 Minutes](http
 ---
 ## Steps
 
-### <u>File creation and index.tsx</u>
+### File creation and index.tsx
 
 1. Create the file with: 
     ```
@@ -34,6 +34,27 @@ This is based on the tutorial [Learn Next.js With TypeScript in 30 Minutes](http
         path: '/'
     }
     ```
-1. Create an ImageContainer.module.css in the styles directory and add the css for the imageContainer in it. Also add the css for the index.tsx in Home.module.css. 
+1. Create an ImageContainer.module.css in the styles directory and add the css for the imageContainer in it. Also add the css for the index.tsx in Home.module.css.
+1. The margin and padding is zeroed and box-sizing is border-box in the globals.css to avoid unexpected behavior.
+1. The parent container in the Home.module.css uses display: flex with the flex-direction being column. The width is 80%, and margin is auto so it is centered. The title has a top and bottom margin of 10px and uses text-align: center.
+1. In the ImageContainer.module.css, display: grid is used since the images will be of uniform size. grid-template-columns: repeat(3, 1fr) is used to ensure this. They are set to justify-content: space-between with text-align: center so that the three appear equi-distant while taking up the 80% width, with a little margin yet on either side.  
 1. In package.json add "&& next export" after "next build". Then on running the 'yarn build' command in terminal, an 'out' folder will be created where the files will be created that can be hosted on your server.
 1. Test them with the command 'npx serve out -p 5000' and then look at the site at 'http://localhost:5000' to ensure everything is working as expected.
+
+### Static and Server Side rendered character pages
+
+1. Create a folder called character/static/[id] in the pages directory and create an index.tsx in the directory.
+1. Using 'rafce' create a function for the page.
+1. Use getStaticPaths and create paths for the three images on the home page.
+1. Note in the return of getStaticPaths it is expecting paths to be an array with objects of the format {params:{id:[string]}}. Make sure the value that you put in for [string] is converted toString if it is a number.
+1. Use getStaticProps to get the props for the page.
+1. Note if Typescript creates a problem for the context that is passed into the getStaticProps. Assert that the id in params in context is not null as follows:
+    ```
+    const id = context!.params!.id!
+    ```
+    This will get typescript to not create a problem.
+1. Create a css module in the styles folder and use that in the className attribute of the parent div in the index.tsx to style the page.
+1. Create a dynamic/[id]/index.tsx in the character folder in the pages directory.
+1. This one won't require getStaticPaths, rather just getServerSideProps which acts almost identical to getStaticProps except that instead of context.params.id it would use context.query.id.
+1. Since there is Server Side rendering in this, you won't be able to next export, so in the build function in package json, remove '&& next export' to make it just 'next build'.
+1. To see if it works run 'yarn build' and then 'yarn start'. Nextjs will build your project and then run it using a Node environment. 

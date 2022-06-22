@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps } from 'next'
+import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -27,6 +27,7 @@ const index = ({character}: {character:Character}) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
     const id = context!.params!.id!
+
     const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`)
     const result = await res.json()
 
