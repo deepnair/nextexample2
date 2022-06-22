@@ -1,34 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## About
+---
 
-## Getting Started
+This is a basic Next.js application that shows characters from the Rick and Morty Api, along with links that takes them to their own page. The pages are dynamically created using Next.js's pagination system.
 
-First, run the development server:
+The characters on the top under "Statically generated characters" are static pages that are created at build time.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+The images on the bottom under "Server Side generated characters" are server side pages that are served at load time.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This is based on the tutorial [Learn Next.js With TypeScript in 30 Minutes](https://www.youtube.com/watch?v=OTuHnVvxTDs) by [TomDoesTech](https://www.youtube.com/c/TomDoesTech) on Youtube.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+---
+## Steps
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### File creation and index.tsx
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Create the file with: 
+    ```
+    yarn create next-app nextexample2 --typescript
+    ```
+    where 'nextexample2' is the name of the project.
+1. In the index.tsx file create the getStaticProps function which is going to be of typescript type GetStaticProps imported from next.
+1. console.log the result that you get from the res.json() of the fetch request in the getStaticProps function, you will see the result in your terminal, not chrome.
+1. Copy the first element of it and put it in app.quicktype.io. Then chose typescript, chose 'interfaces only' in the menu. Copy the resulting interfaces.
+1. Create a new file in the root of your project called types.ts. Paste the resulting interfaces from quicktype.io and rename the interfaces to something that makes sense. 
+1. In the Home function you can add the generic <{characters: Character[]}> after NextPage. The 'Character' in Character[] is imported from the types.ts you just made. Remember to still put {characters} as an argument in the function despite the generic typing of NextPage.
+1. Create the JSX elements of the page. Create a ImageContainer component use that to hold the images in index.tsx.
+1. The image container portion uses four attributes, the characters, id that the character.id must be greaterthan, the id that character.id must be less than and the link type (whether it should be static pages or dynamically generated pages).
+1. Be sure to create an imageLoader.ts which has the imageLoader to be used by the Image component from next/image. Also in the next.config.js, add
+    ```typescript
+    image:{
+        domains: ['http://rickandmortyapi.com'],
+        loader: 'custom',
+        path: '/'
+    }
+    ```
+1. Create an ImageContainer.module.css in the styles directory and add the css for the imageContainer in it. Also add the css for the index.tsx in Home.module.css. 
+1. In package.json add "&& next export" after "next build". Then on running the 'yarn build' command in terminal, an 'out' folder will be created where the files will be created that can be hosted on your server.
+1. Test them with the command 'npx serve out -p 5000' and then look at the site at 'http://localhost:5000' to ensure everything is working as expected.
